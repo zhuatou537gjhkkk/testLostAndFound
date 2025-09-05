@@ -1,0 +1,21 @@
+# Python 虚拟环境
+venv/
+__pycache__/
+*.py[cod]
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 用户上传的文件夹
+uploads/
+
+# IDE 和操作系统配置文件
+.vscode/
+.idea/
+*.DS_Store
+
+node_modules/
+package-lock.json
+.env

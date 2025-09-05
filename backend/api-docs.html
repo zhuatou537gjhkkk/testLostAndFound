@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>校园失物招领平台 API 文档</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 20px auto;
+      max-width: 960px;
+      line-height: 1.6;
+      background: #fdfdfd;
+      color: #333;
+      padding: 1em;
+    }
+    h1, h2, h3 {
+      color: #1a73e8;
+    }
+    code {
+      background: #f5f5f5;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 0.95em;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 10px;
+      border-left: 4px solid #1a73e8;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📚 校园失物招领平台 API 文档</h1>
+
+<h2>🌐 Base URL</h2>
+<pre>http://localhost:5000</pre>
+
+<h2>🧑 用户模块</h2>
+
+<h3>POST /api/auth/register</h3>
+<p>用户注册</p>
+<pre>{
+  "username": "张三",
+  "password": "123456",
+  "email": "zhangsan@example.com"
+}</pre>
+
+<h3>POST /api/auth/login</h3>
+<p>用户登录</p>
+<pre>{
+  "username": "张三",
+  "password": "123456"
+}</pre>
+
+<h2>📦 物品管理</h2>
+
+<h3>POST /api/items</h3>
+<p>创建失物/招领信息，并自动智能推送</p>
+<pre>{
+  "title": "黑色钱包",
+  "description": "图书馆三楼丢失，里面有学生卡",
+  "image": "/uploads/cover.jpg",
+  "images": ["/uploads/1.jpg", "/uploads/2.jpg"],
+  "category": "证件类",
+  "location": "图书馆三楼",
+  "type": "lost",
+  "date": "2025-07-01",
+  "latitude": 39.914,
+  "longitude": 116.403
+}</pre>
+
+<h3>GET /api/items/mine</h3>
+<p>获取当前用户发布的所有物品</p>
+
+<h3>DELETE /api/items/:id</h3>
+<p>删除指定物品（仅限本人）</p>
+
+<h3>GET /api/items/search</h3>
+<p>综合搜索 + 地理筛选</p>
+<pre>/api/items/search?keyword=钱包&latitude=39.914&longitude=116.403&radius=0.5</pre>
+
+<h2>📤 图片上传</h2>
+
+<h3>POST /api/upload/images</h3>
+<p>上传多张图片</p>
+<pre>FormData: images: [file1, file2, ...]</pre>
+
+<h2>✉️ 邮件通知测试</h2>
+
+<h3>POST /api/notify/test-email</h3>
+<pre>{
+  "email": "test@example.com",
+  "subject": "测试邮件",
+  "message": "你好，这是测试"
+}</pre>
+
+<h2>📍 数据模型说明：Item 表</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th><th>类型</th><th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>INTEGER</td><td>主键</td></tr>
+    <tr><td>title</td><td>STRING</td><td>物品标题</td></tr>
+    <tr><td>description</td><td>TEXT</td><td>物品描述</td></tr>
+    <tr><td>image</td><td>STRING</td><td>单图封面</td></tr>
+    <tr><td>images</td><td>JSON</td><td>多图数组</td></tr>
+    <tr><td>category</td><td>STRING</td><td>分类</td></tr>
+    <tr><td>location</td><td>STRING</td><td>地点描述</td></tr>
+    <tr><td>type</td><td>ENUM</td><td>lost / found</td></tr>
+    <tr><td>date</td><td>DATE</td><td>丢失/拾获日期</td></tr>
+    <tr><td>status</td><td>STRING</td><td>默认 open</td></tr>
+    <tr><td>latitude</td><td>FLOAT</td><td>纬度</td></tr>
+    <tr><td>longitude</td><td>FLOAT</td><td>经度</td></tr>
+    <tr><td>userId</td><td>INTEGER</td><td>关联用户</td></tr>
+  </tbody>
+</table>
+
+<h2>📋 状态码参考</h2>
+<table>
+  <tr><th>状态码</th><th>说明</th></tr>
+  <tr><td>200</td><td>请求成功</td></tr>
+  <tr><td>201</td><td>创建成功</td></tr>
+  <tr><td>400</td><td>参数错误</td></tr>
+  <tr><td>401</td><td>未授权</td></tr>
+  <tr><td>403</td><td>权限不足</td></tr>
+  <tr><td>404</td><td>资源不存在</td></tr>
+  <tr><td>500</td><td>服务器错误</td></tr>
+</table>
+
+</body>
+</html>
