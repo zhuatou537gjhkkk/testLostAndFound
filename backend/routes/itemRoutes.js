@@ -5,8 +5,8 @@ const router = express.Router();
 const auth = require('../middleware/authMiddleware');
 const {
   createItem, getMyItems, deleteItem,
-  searchItems, getItemById,updateItem,           
-  updateItemStatus      
+  searchItems, getItemById, updateItem,
+  updateItemStatus
 } = require('../controllers/itemController');
 const { multipleUpload } = require('../middleware/upload');
 
@@ -26,8 +26,8 @@ router.get('/debug/all', async (req, res) => {
 
 // 标记找回
 router.patch('/:id/status', auth, updateItemStatus);
-// 更新物品信息（只允许本人）
-router.put('/:id', auth, updateItem)
+// 更新物品信息（只允许本人），并添加 multipleUpload 中间件
+router.put('/:id', auth, multipleUpload, updateItem)
 
 
 module.exports = router;

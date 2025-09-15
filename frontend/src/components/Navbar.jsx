@@ -5,14 +5,23 @@ import { LogoutIcon } from '@heroicons/react/outline'
 export default function Navbar() {
     const location = useLocation()
     const { user, logout } = useUserStore()
-    const menu = [
+
+    // 1. 将菜单分为公共菜单和需要登录的私有菜单
+    const publicMenu = [
         { name: '首页', to: '/' },
+    ]
+
+    const privateMenu = [
         { name: '发布', to: '/post' },
         { name: '我的发布', to: '/my-items' },
         { name: '私信', to: '/inbox' },
         { name: '搜索', to: '/search' },
         { name: '地图', to: '/map' }
     ]
+
+    // 合并菜单：如果用户登录了，就显示所有菜单，否则只显示公共菜单
+    const menu = user ? [...publicMenu, ...privateMenu] : publicMenu
+
     const isActive = (to) =>
         location.pathname === to
             ? 'border-b-2 border-indigo-500 text-indigo-600'
