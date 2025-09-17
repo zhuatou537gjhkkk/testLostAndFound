@@ -15,17 +15,26 @@ import './index.css';
 import SearchItems from './pages/SearchItems'
 import EditItem from './pages/EditItem'
 
-// 1. 创建一个路由守卫组件
+// ✅ *** 修复后的路由守卫组件 ***
 function ProtectedRoute({ children }) {
   const user = useUserStore((state) => state.user);
-  // 检查 localStorage 以应对刷新后 store 状态延迟的问题
-  const token = localStorage.getItem('token');
+  const isLoading = useUserStore((state) => state.isLoading);
 
-  if (!user && !token) {
-    // 如果用户未登录，则重定向到登录页
+  // 1. 如果正在检查登录状态，则显示加载提示
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div>正在检查登录状态...</div>
+      </div>
+    );
+  }
+
+  // 2. 加载结束后，如果用户状态仍然不存在，则重定向到登录页
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
+  // 3. 确认用户已登录，才渲染子组件
   return children;
 }
 

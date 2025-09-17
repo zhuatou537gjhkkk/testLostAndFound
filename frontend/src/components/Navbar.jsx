@@ -1,12 +1,12 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useUserStore from '../store/user'
 import { LogoutIcon } from '@heroicons/react/outline'
 
 export default function Navbar() {
     const location = useLocation()
+    const navigate = useNavigate() // 1. 引入useNavigate
     const { user, logout } = useUserStore()
 
-    // 1. 将菜单分为公共菜单和需要登录的私有菜单
     const publicMenu = [
         { name: '首页', to: '/' },
     ]
@@ -19,7 +19,6 @@ export default function Navbar() {
         { name: '地图', to: '/map' }
     ]
 
-    // 合并菜单：如果用户登录了，就显示所有菜单，否则只显示公共菜单
     const menu = user ? [...publicMenu, ...privateMenu] : publicMenu
 
     const isActive = (to) =>
@@ -48,6 +47,7 @@ export default function Navbar() {
                                 onClick={() => {
                                     logout()
                                     localStorage.removeItem('token')
+                                    navigate('/login') // 2. 点击后跳转到登录页
                                 }}
                                 className="hover:bg-gray-200 p-1 rounded"
                             >
