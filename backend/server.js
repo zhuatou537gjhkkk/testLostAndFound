@@ -21,9 +21,12 @@ app.use('/api/notify', notifyRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
-// 👇 *** 把 alter: true 修改为 force: true ***
-sequelize.sync({ force: true }).then(() => {
-  console.log('✅ 数据库已重置并同步'); // 修改日志信息以作区分
+// 👇 *** 修改这里 ***
+// 注释: 将 sequelize.sync({ force: true }) 修改为 sequelize.sync()。
+// force: true 会在每次服务器启动时删除所有表并重建，导致数据丢失。
+// 修改后的 sequelize.sync() 只会在表不存在时创建它们，从而实现数据的持久化。
+sequelize.sync().then(() => {
+  console.log('✅ 数据库已同步'); // 修改日志信息
   app.listen(process.env.PORT || 5000, () => {
     console.log('🚀 服务器已启动');
   });
